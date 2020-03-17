@@ -13,28 +13,21 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
 
-# pylint: disable=fixme
-
 _LOGGER = logging.getLogger(__name__)
 
 CONFIG_SCHEMA = vol.Schema({DOMAIN: vol.Schema({})}, extra=vol.ALLOW_EXTRA)
 
-# TODO List the platforms that you want to support.
-# For your initial PR, limit it to 1 platform.
 PLATFORMS = ["sensor", "cover", "air_quality", "light", "climate", "switch"]
 
 
-# TODO: test
 async def async_setup(hass: HomeAssistant, config: dict):
     """Set up the BleBox devices component."""
-    # TODO: coverage
     return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up BleBox devices from a config entry."""
 
-    # TODO: coverage
     for component in PLATFORMS:
         hass.async_create_task(
             hass.config_entries.async_forward_entry_setup(entry, component)
@@ -44,7 +37,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
-    # TODO: coverage
     """Unload a config entry."""
     unload_ok = all(
         await asyncio.gather(
@@ -66,7 +58,6 @@ async def async_add_blebox(klass, method, hass, config, async_add):
 
     websession = async_get_clientsession(hass)
     api_host = ApiHost(host, port, timeout, websession, hass.loop, _LOGGER)
-    # TODO: handle exceptions here (CannotConnect?)
     product = await Products.async_from_host(api_host)
 
     entities = []
