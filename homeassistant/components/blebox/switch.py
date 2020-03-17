@@ -3,6 +3,10 @@ from homeassistant.components.switch import DEVICE_CLASS_SWITCH, SwitchDevice
 
 from . import CommonEntity, async_add_blebox
 
+# NOTE: this should be removed once client library uses a semaphore
+PARALLEL_UPDATES = 1
+
+
 # pylint: disable=fixme
 
 

@@ -15,6 +15,9 @@ from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
 
 from . import CommonEntity, async_add_blebox
 
+# NOTE: this should be removed once client library uses a semaphore
+PARALLEL_UPDATES = 1
+
 
 # TODO: remove?
 async def async_setup_platform(hass, config, async_add, discovery_info=None):
