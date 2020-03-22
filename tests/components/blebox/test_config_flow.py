@@ -158,7 +158,7 @@ async def test_async_setup_entry(hass):
     ) as mock_load:
         assert await hass.config_entries.async_setup(config.entry_id)
         assert config.state == config_entries.ENTRY_STATE_LOADED
-        assert len(mock_load.mock_calls) == 1  # 1 platform for now
+        assert len(mock_load.mock_calls) == 6
 
 
 async def test_async_unload_entry(hass):
@@ -172,4 +172,4 @@ async def test_async_unload_entry(hass):
     ) as mock_unload:
         assert await async_unload_entry(hass, config)
         assert config.state == config_entries.ENTRY_STATE_NOT_LOADED
-        assert len(mock_unload.mock_calls) == 1  # 1 platform for now
+        assert len(mock_unload.mock_calls) == 6
