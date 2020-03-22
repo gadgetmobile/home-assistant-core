@@ -39,17 +39,19 @@ async def validate_input(hass: core.HomeAssistant, data):
     host = data[CONF_HOST]
     port = data[CONF_PORT]
 
-    try:
-        websession = async_get_clientsession(hass)
-        api_host = ApiHost(host, port, None, websession, hass.loop, _LOGGER)
-        product = await Products.async_from_host(api_host)
+    websession = async_get_clientsession(hass)
+    api_host = ApiHost(host, port, None, websession, hass.loop, _LOGGER)
 
-        # Return some info we want to store in the config entry.
-        return {"title": product.name}
+    try:
+        product = await Products.async_from_host(api_host)
     except Error as ex:
-        # TODO: coverage
-        _LOGGER.error("validate input: likely failed to connect (%s)", ex)
+        _LOGGER.error(
+            "validate input: failed to identify device at %s:%d (%s)", host, port, ex
+        )
         raise CannotConnect
+
+    # Return some info we want to store in the config entry.
+    return {"title": product.name}
 
 
 class BleBoxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
