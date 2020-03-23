@@ -43,10 +43,8 @@ async def validate_input(hass: core.HomeAssistant, data):
     try:
         product = await Products.async_from_host(api_host)
     except Error as ex:
-        _LOGGER.error(
-            "validate input: failed to identify device at %s:%d (%s)", host, port, ex
-        )
-        raise CannotConnect
+        _LOGGER.error("Failed to identify device at %s:%d (%s)", host, port, ex)
+        raise CannotConnect from ex
 
     # Return some info we want to store in the config entry.
     return {"title": product.name}
