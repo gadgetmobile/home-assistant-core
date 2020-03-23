@@ -31,7 +31,7 @@ class TestDimmer(LightTest):
         """Return a mocked Light feature representing a dimmerBox."""
         self._feature_mock = mock_feature(
             "lights",
-            blebox_uniapi.feature.Light,
+            blebox_uniapi.light.Light,
             unique_id="BleBox-dimmerBox-1afe34e750b8-brightness",
             full_name="dimmerBox-brightness",
             device_class=None,
@@ -177,7 +177,7 @@ class TestWLightBoxS(LightTest):
         """Return a mocked Light feature representing a wLightBoxS."""
         self._feature_mock = mock_feature(
             "lights",
-            blebox_uniapi.feature.Light,
+            blebox_uniapi.light.Light,
             unique_id="BleBox-wLightBoxS-1afe34e750b8-color",
             full_name="wLightBoxS-color",
             device_class=None,
@@ -257,7 +257,7 @@ class TestWLightBox(LightTest):
         """Return a mocked Light feature representing a wLightBox."""
         self._feature_mock = mock_feature(
             "lights",
-            blebox_uniapi.feature.Light,
+            blebox_uniapi.light.Light,
             unique_id="BleBox-wLightBox-1afe34e750b8-color",
             full_name="wLightBox-color",
             device_class=None,

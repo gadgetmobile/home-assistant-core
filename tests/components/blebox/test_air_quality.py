@@ -14,7 +14,7 @@ def feature_mock():
     """Return a mocked Air Quality feature."""
     return mock_feature(
         "air_qualities",
-        blebox_uniapi.feature.AirQuality,
+        blebox_uniapi.air_quality.AirQuality,
         unique_id="BleBox-airSensor-1afe34db9437-0.air",
         full_name="airSensor-0.air",
         device_class=None,

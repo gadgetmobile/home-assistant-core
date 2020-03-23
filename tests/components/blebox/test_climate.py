@@ -23,7 +23,7 @@ def feature_mock():
     """Return a mocked Climate feature."""
     return mock_feature(
         "climates",
-        blebox_uniapi.feature.Climate,
+        blebox_uniapi.climate.Climate,
         unique_id="BleBox-saunaBox-1afe34db9437-thermostat",
         full_name="saunaBox-thermostat",
         device_class=None,

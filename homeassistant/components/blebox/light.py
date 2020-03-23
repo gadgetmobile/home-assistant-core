@@ -1,7 +1,7 @@
 """BleBox light entities implementation."""
 import logging
 
-from blebox_uniapi.feature import BadOnValueError
+from blebox_uniapi.error import BadOnValueError
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,

@@ -20,7 +20,7 @@ class TestTempSensor(DefaultBoxTest):
         """Return a mocked Sensor feature representing a tempSensor."""
         self._feature_mock = mock_feature(
             "sensors",
-            blebox_uniapi.feature.Temperature,
+            blebox_uniapi.sensor.Temperature,
             unique_id="BleBox-tempSensor-1afe34db9437-0.temperature",
             full_name="tempSensor-0.temperature",
             device_class="temperature",

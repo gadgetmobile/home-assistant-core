@@ -24,7 +24,7 @@ def init_config_flow(hass):
 def feature_mock():
     """Return a mocked feature."""
     feature = mock_only_feature(
-        blebox_uniapi.feature.Temperature,
+        blebox_uniapi.sensor.Temperature,
         unique_id="BleBox-tempSensor-1afe34db9437-0.temperature",
         full_name="tempSensor-0.temperature",
         device_class="temperature",
@@ -114,7 +114,7 @@ async def test_already_configured(hass):
     """Test that same device cannot be added twice."""
 
     feature = mock_only_feature(
-        blebox_uniapi.feature.Cover,
+        blebox_uniapi.cover.Cover,
         unique_id="BleBox-gateBox-1afe34db9437-0.position",
         full_name="gateBox-0.position",
         device_class="gate",

@@ -23,7 +23,7 @@ class TestSwitchBox(DefaultBoxTest):
         """Return a mocked Switch feature representing a switchBox."""
         self._feature_mock = mock_feature(
             "switches",
-            blebox_uniapi.feature.Switch,
+            blebox_uniapi.switch.Switch,
             unique_id="BleBox-switchBox-1afe34e750b8-0.relay",
             full_name="switchBox-0.relay",
             device_class="relay",
@@ -135,7 +135,7 @@ class TestSwitchBoxD(DefaultBoxTest):
     def feature_mock(self):
         """Set up two mocked Switch features representing a switchBoxD."""
         r1 = mock_only_feature(
-            blebox_uniapi.feature.Switch,
+            blebox_uniapi.switch.Switch,
             unique_id="BleBox-switchBoxD-1afe34e750b8-0.relay",
             full_name="switchBoxD-0.relay",
             device_class="relay",
@@ -143,7 +143,7 @@ class TestSwitchBoxD(DefaultBoxTest):
         )
 
         r2 = mock_only_feature(
-            blebox_uniapi.feature.Switch,
+            blebox_uniapi.switch.Switch,
             unique_id="BleBox-switchBoxD-1afe34e750b8-1.relay",
             full_name="switchBoxD-1.relay",
             device_class="relay",

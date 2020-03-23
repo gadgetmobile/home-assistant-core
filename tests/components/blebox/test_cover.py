@@ -163,7 +163,7 @@ class TestShutter(CoverTest):
         """Return a mocked Cover feature representing a shutterBox."""
         self._feature_mock = mock_feature(
             "covers",
-            blebox_uniapi.feature.Cover,
+            blebox_uniapi.cover.Cover,
             unique_id="BleBox-shutterBox-2bee34e750b8-position",
             full_name="shutterBox-position",
             device_class="shutter",
@@ -222,7 +222,7 @@ class TestGateBox(CoverTest):
         """Return a mocked Cover feature representing a gateBox."""
         self._feature_mock = mock_feature(
             "covers",
-            blebox_uniapi.feature.Cover,
+            blebox_uniapi.cover.Cover,
             unique_id="BleBox-gateBox-1afe34db9437-position",
             device_class="gatebox",
             full_name="gateBox-position",
@@ -300,7 +300,7 @@ class TestGateController(CoverTest):
         """Return a mocked Cover feature representing a gateController."""
         self._feature_mock = mock_feature(
             "covers",
-            blebox_uniapi.feature.Cover,
+            blebox_uniapi.cover.Cover,
             unique_id="BleBox-gateController-2bee34e750b8-position",
             full_name="gateController-position",
             device_class="gate",
