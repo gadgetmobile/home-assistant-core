@@ -182,8 +182,8 @@ class TestWLightBoxS(LightTest):
             full_name="wLightBoxS-color",
             device_class=None,
             supports_white=False,
-            brightness=0xE3,
-            is_on=True,
+            brightness=None,
+            is_on=None,
         )
         return self._feature_mock
 
@@ -195,9 +195,9 @@ class TestWLightBoxS(LightTest):
         assert entity.unique_id == "BleBox-wLightBoxS-1afe34e750b8-color"
 
         assert entity.supported_features & SUPPORT_BRIGHTNESS
-        assert entity.brightness == 0xE3
+        assert entity.brightness is None
 
-        assert entity.is_on is True  # state already available
+        assert entity.is_on is None
 
     def updateable_feature_mock(self):
         """Set up mocked feature that can be updated."""
@@ -261,9 +261,9 @@ class TestWLightBox(LightTest):
             unique_id="BleBox-wLightBox-1afe34e750b8-color",
             full_name="wLightBox-color",
             device_class=None,
-            is_on=True,
-            white_value=0xD9,
-            rgbw_hex="abcdefd9",
+            is_on=None,
+            white_value=None,
+            rgbw_hex=None,
         )
         return self._feature_mock
 
@@ -275,19 +275,20 @@ class TestWLightBox(LightTest):
         assert entity.unique_id == "BleBox-wLightBox-1afe34e750b8-color"
 
         assert entity.supported_features & SUPPORT_WHITE_VALUE
-        assert entity.white_value == 0xD9
+        assert entity.white_value is None
 
         assert entity.supported_features & SUPPORT_COLOR
-        assert entity.hs_color == (210.0, 28.452)
-        assert entity.white_value == 0xD9
+        assert entity.hs_color is None
+        assert entity.white_value is None
 
-        assert entity.is_on is True  # state already available
+        assert entity.is_on is None  # state already available
 
     def updateable_feature_mock(self):  # overloaded
         """Set up mocked feature that can be updated."""
         feature_mock = self._feature_mock
 
         def update():
+            feature_mock.is_on = True
             feature_mock.rgbw_hex = "fa00203A"
             feature_mock.white_value = 0x3A
 

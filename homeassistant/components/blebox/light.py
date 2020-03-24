@@ -68,6 +68,9 @@ class BleBoxLightEntity(CommonEntity, Light):
     def hs_color(self):
         """Return the hue and saturation."""
         rgbw_hex = self._feature.rgbw_hex
+        if rgbw_hex is None:
+            return None
+
         rgb = rgb_hex_to_rgb_list(rgbw_hex)[0:3]
         return color_RGB_to_hs(*rgb)
 
@@ -93,9 +96,9 @@ class BleBoxLightEntity(CommonEntity, Light):
 
         try:
             await self._feature.async_on(value)
-        except BadOnValueError:
+        except BadOnValueError as ex:
             # TODO: coverage
-            _LOGGER.error("tried to turn on with a value that means 'off'")
+            _LOGGER.error(f"turning on failed ({value}): {ex}")
 
     async def async_turn_off(self, **kwargs):
         """Turn the light off."""
