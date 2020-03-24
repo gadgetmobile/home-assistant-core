@@ -73,6 +73,11 @@ class BleBoxClimateEntity(CommonEntity, ClimateDevice):
         return TEMP_CELSIUS
 
     @property
+    def max_temp(self):
+        """Return the maximum temperature supported."""
+        return 125
+
+    @property
     def current_temperature(self):
         """Return the current temperature."""
         return self._feature.current
