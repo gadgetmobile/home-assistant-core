@@ -27,6 +27,12 @@ class CoverTest(DefaultBoxTest):
 
     HASS_TYPE = cover
 
+    @pytest.fixture(autouse=True)
+    def feature_mock(self):
+        """Return the default mocked Cover feature."""
+        self._feature_mock = self.default_mock()
+        return self._feature_mock
+
     def assert_state(self, entity, state):
         """Assert that cover state is correct."""
         assert entity.state == state
@@ -158,10 +164,9 @@ class CoverTest(DefaultBoxTest):
 class TestShutter(CoverTest):
     """Tests for cover devices representing a BleBox ShutterBox."""
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Return a mocked Cover feature representing a shutterBox."""
-        self._feature_mock = mock_feature(
+    def default_mock(self):
+        """Return a default cover entity mock."""
+        return mock_feature(
             "covers",
             blebox_uniapi.cover.Cover,
             unique_id="BleBox-shutterBox-2bee34e750b8-position",
@@ -172,7 +177,6 @@ class TestShutter(CoverTest):
             has_stop=True,
             is_slider=True,
         )
-        return self._feature_mock
 
     async def test_init(self, hass):
         """Test cover default state."""
@@ -244,10 +248,9 @@ class TestShutter(CoverTest):
 class TestGateBox(CoverTest):
     """Tests for cover devices representing a BleBox gateBox."""
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Return a mocked Cover feature representing a gateBox."""
-        self._feature_mock = mock_feature(
+    def default_mock(self):
+        """Return a default gatebox cover entity mock."""
+        return mock_feature(
             "covers",
             blebox_uniapi.cover.Cover,
             unique_id="BleBox-gateBox-1afe34db9437-position",
@@ -258,7 +261,6 @@ class TestGateBox(CoverTest):
             has_stop=False,
             is_slider=False,
         )
-        return self._feature_mock
 
     def updateable_feature_mock(self):
         """Set up a mocked feature that can be updated."""
@@ -322,10 +324,9 @@ class TestGateBox(CoverTest):
 class TestGateController(CoverTest):
     """Tests for cover devices representing a BleBox gateController."""
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Return a mocked Cover feature representing a gateController."""
-        self._feature_mock = mock_feature(
+    def default_mock(self):
+        """Return a default gateController cover entity mock."""
+        return mock_feature(
             "covers",
             blebox_uniapi.cover.Cover,
             unique_id="BleBox-gateController-2bee34e750b8-position",
@@ -336,7 +337,6 @@ class TestGateController(CoverTest):
             has_stop=True,
             is_slider=True,
         )
-        return self._feature_mock
 
     async def test_init(self, hass):
         """Test cover default state."""

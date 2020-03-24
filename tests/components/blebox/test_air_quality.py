@@ -9,9 +9,8 @@ from homeassistant.components.blebox import air_quality
 from .conftest import DefaultBoxTest, mock_feature
 
 
-@pytest.fixture
-def feature_mock():
-    """Return a mocked Air Quality feature."""
+def default_mock():
+    """Return a default air quality mock."""
     return mock_feature(
         "air_qualities",
         blebox_uniapi.air_quality.AirQuality,
@@ -22,6 +21,12 @@ def feature_mock():
         pm2_5=None,
         pm10=None,
     )
+
+
+@pytest.fixture
+def feature_mock():
+    """Return a mocked Air Quality feature."""
+    return default_mock()
 
 
 @pytest.fixture
@@ -38,6 +43,10 @@ def updateable_feature_mock(feature_mock):
 
 class TestAirSensor(DefaultBoxTest):
     """Tests for sensors representing BleBox airSensor."""
+
+    def default_mock(self):
+        """Return a default air quality mock."""
+        return default_mock()
 
     HASS_TYPE = air_quality
 

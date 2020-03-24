@@ -18,9 +18,8 @@ from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
 from .conftest import DefaultBoxTest, mock_feature
 
 
-@pytest.fixture
-def feature_mock():
-    """Return a mocked Climate feature."""
+def default_mock():
+    """Return a default climate entity mock."""
     return mock_feature(
         "climates",
         blebox_uniapi.climate.Climate,
@@ -31,6 +30,12 @@ def feature_mock():
         desired=None,
         current=None,
     )
+
+
+@pytest.fixture
+def feature_mock():
+    """Return a mocked Climate feature."""
+    return default_mock()
 
 
 @pytest.fixture
@@ -125,6 +130,10 @@ class TestSauna(DefaultBoxTest):
     """Tests for entities representing a BleBox saunaBox."""
 
     HASS_TYPE = climate
+
+    def default_mock(self):
+        """Return a default climate entity mock."""
+        return default_mock()
 
     async def test_init(self, hass, feature_mock):
         """Test default state."""

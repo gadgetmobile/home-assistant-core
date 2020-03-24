@@ -22,14 +22,19 @@ class LightTest(DefaultBoxTest):
 
     HASS_TYPE = light
 
+    @pytest.fixture(autouse=True)
+    def feature_mock(self):
+        """Return the default mocked Light feature."""
+        self._feature_mock = self.default_mock()
+        return self._feature_mock
+
 
 class TestDimmer(LightTest):
     """Tests for BleBox dimmerBox."""
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Return a mocked Light feature representing a dimmerBox."""
-        self._feature_mock = mock_feature(
+    def default_mock(self):
+        """Return a default light entity mock."""
+        return mock_feature(
             "lights",
             blebox_uniapi.light.Light,
             unique_id="BleBox-dimmerBox-1afe34e750b8-brightness",
@@ -38,7 +43,6 @@ class TestDimmer(LightTest):
             brightness=65,
             is_on=True,
         )
-        return self._feature_mock
 
     def updateable_feature_mock(self):
         """Set up mocked feature that can be updated."""
@@ -172,10 +176,9 @@ class TestDimmer(LightTest):
 class TestWLightBoxS(LightTest):
     """Tests for BleBox wLightBoxS."""
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Return a mocked Light feature representing a wLightBoxS."""
-        self._feature_mock = mock_feature(
+    def default_mock(self):
+        """Return a default light entity mock."""
+        return mock_feature(
             "lights",
             blebox_uniapi.light.Light,
             unique_id="BleBox-wLightBoxS-1afe34e750b8-color",
@@ -185,7 +188,6 @@ class TestWLightBoxS(LightTest):
             brightness=None,
             is_on=None,
         )
-        return self._feature_mock
 
     async def test_init(self, hass):
         """Test cover default state."""
@@ -252,10 +254,9 @@ class TestWLightBoxS(LightTest):
 class TestWLightBox(LightTest):
     """Tests for BleBox wLightBox."""
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Return a mocked Light feature representing a wLightBox."""
-        self._feature_mock = mock_feature(
+    def default_mock(self):
+        """Return a default light entity mock."""
+        return mock_feature(
             "lights",
             blebox_uniapi.light.Light,
             unique_id="BleBox-wLightBox-1afe34e750b8-color",
@@ -265,7 +266,6 @@ class TestWLightBox(LightTest):
             white_value=None,
             rgbw_hex=None,
         )
-        return self._feature_mock
 
     async def test_init(self, hass):
         """Test cover default state."""

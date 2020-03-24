@@ -102,3 +102,22 @@ class DefaultBoxTest:
                 ]
             )
             assert isinstance(error.call_args[0][3], blebox_uniapi.error.ClientError)
+
+    def default_mock(self):
+        """Return a default entity mock."""
+        raise NotImplementedError("Implement me")  # pragma: no cover
+
+    async def test_update_failure(self, hass):
+        """Set up a mocked feature which can be updated."""
+
+        feature_mock = self.default_mock()
+        feature_mock.async_update = CoroutineMock(
+            side_effect=blebox_uniapi.error.ClientError
+        )
+        name = feature_mock.full_name
+
+        with patch("homeassistant.components.blebox._LOGGER.error") as error:
+            await self.async_updated_entity(hass, 0)
+
+            error.assert_has_calls([call("Updating %s failed: %s", name, mock.ANY)])
+            assert isinstance(error.call_args[0][2], blebox_uniapi.error.ClientError)

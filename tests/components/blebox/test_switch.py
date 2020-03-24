@@ -18,10 +18,9 @@ from .conftest import (
 class TestSwitchBox(DefaultBoxTest):
     """Tests for BleBox switchBox."""
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Return a mocked Switch feature representing a switchBox."""
-        self._feature_mock = mock_feature(
+    def default_mock(self):
+        """Return a default switchBox switch entity mock."""
+        return mock_feature(
             "switches",
             blebox_uniapi.switch.Switch,
             unique_id="BleBox-switchBox-1afe34e750b8-0.relay",
@@ -29,6 +28,11 @@ class TestSwitchBox(DefaultBoxTest):
             device_class="relay",
             is_on=False,
         )
+
+    @pytest.fixture(autouse=True)
+    def feature_mock(self):
+        """Return a mocked Switch feature representing a switchBox."""
+        self._feature_mock = self.default_mock()
         return self._feature_mock
 
     HASS_TYPE = switch
@@ -131,24 +135,34 @@ class TestSwitchBoxD(DefaultBoxTest):
 
     HASS_TYPE = switch
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Set up two mocked Switch features representing a switchBoxD."""
-        r1 = mock_only_feature(
+    def default_mock(self, id=0):
+        """Provide a default single-feature mock for base class."""
+
+        id = 0
+        return mock_feature(
+            "switches",
             blebox_uniapi.switch.Switch,
-            unique_id="BleBox-switchBoxD-1afe34e750b8-0.relay",
-            full_name="switchBoxD-0.relay",
+            unique_id=f"BleBox-switchBoxD-1afe34e750b8-{id}.relay",
+            full_name=f"switchBoxD-{id}.relay",
             device_class="relay",
             is_on=None,
         )
 
-        r2 = mock_only_feature(
+    def default_mock_relay(self, id=0):
+        """Return a default switchBoxD switch entity mock."""
+        return mock_only_feature(
             blebox_uniapi.switch.Switch,
-            unique_id="BleBox-switchBoxD-1afe34e750b8-1.relay",
-            full_name="switchBoxD-1.relay",
+            unique_id=f"BleBox-switchBoxD-1afe34e750b8-{id}.relay",
+            full_name=f"switchBoxD-{id}.relay",
             device_class="relay",
             is_on=None,
         )
+
+    @pytest.fixture(autouse=True)
+    def feature_mock(self):
+        """Set up two mocked Switch features representing a switchBoxD."""
+        r1 = self.default_mock_relay(0)
+        r2 = self.default_mock_relay(1)
 
         self._feature_mocks = [r1, r2]
         setup_product_mock("switches", self._feature_mocks)

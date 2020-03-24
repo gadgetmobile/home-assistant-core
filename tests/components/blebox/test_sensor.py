@@ -15,10 +15,9 @@ class TestTempSensor(DefaultBoxTest):
 
     HASS_TYPE = sensor
 
-    @pytest.fixture(autouse=True)
-    def feature_mock(self):
-        """Return a mocked Sensor feature representing a tempSensor."""
-        self._feature_mock = mock_feature(
+    def default_mock(self):
+        """Return a default sensor mock."""
+        return mock_feature(
             "sensors",
             blebox_uniapi.sensor.Temperature,
             unique_id="BleBox-tempSensor-1afe34db9437-0.temperature",
@@ -27,6 +26,11 @@ class TestTempSensor(DefaultBoxTest):
             unit="celsius",
             current=None,
         )
+
+    @pytest.fixture(autouse=True)
+    def feature_mock(self):
+        """Return a mocked Sensor feature representing a tempSensor."""
+        self._feature_mock = self.default_mock()
         return self._feature_mock
 
     async def test_init(self, hass):
