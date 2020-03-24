@@ -1,6 +1,6 @@
 """BleBox cover entities tests."""
 
-from asynctest import CoroutineMock
+from asynctest import CoroutineMock, call, patch
 import blebox_uniapi
 import pytest
 
@@ -212,6 +212,33 @@ class TestShutter(CoverTest):
         self.assert_state(entity, STATE_CLOSED)
         await entity.async_set_cover_position(**{ATTR_POSITION: 1})  # almost closed
         self.assert_state(entity, STATE_OPENING)
+
+    def unkown_position_feature_mock(self):
+        """Return mocked feature representing an invalid+possible position."""
+        feature_mock = self._feature_mock
+
+        def update():
+            feature_mock.state = 4  # opening
+            feature_mock.current = -1
+
+        feature_mock.async_update = CoroutineMock(side_effect=update)
+
+    async def test_unknown_position(self, hass):
+        """Test cover position setting."""
+        self.unkown_position_feature_mock()
+
+        with patch("homeassistant.components.blebox.cover._LOGGER.warning") as warn:
+            entity = await self.async_updated_entity(hass, 0)
+            self.assert_state(entity, STATE_OPEN)
+            assert entity.current_cover_position is None
+            warn.assert_has_calls(
+                [
+                    call(
+                        "Position for %s is unknown. Try calibrating the device.",
+                        "shutterBox-position",
+                    )
+                ]
+            )
 
 
 class TestGateBox(CoverTest):

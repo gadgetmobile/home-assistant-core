@@ -1,5 +1,7 @@
 """BleBox cover entity implementation."""
 
+import logging
+
 from homeassistant.components.cover import (
     ATTR_POSITION,
     DEVICE_CLASS_DOOR,
@@ -16,6 +18,8 @@ from homeassistant.components.cover import (
 )
 
 from . import CommonEntity, async_add_blebox
+
+_LOGGER = logging.getLogger(__name__)
 
 # NOTE: this should be removed once client library uses a semaphore
 PARALLEL_UPDATES = 1
@@ -77,6 +81,13 @@ class BleBoxCoverEntity(CommonEntity, CoverDevice):
     def current_cover_position(self):
         """Return the current cover position."""
         position = self._feature.current
+        if position == -1:  # possible for shutterBox
+            name = self.name
+            _LOGGER.warning(
+                "Position for %s is unknown. Try calibrating the device.", name
+            )
+            return None
+
         return None if position is None else 100 - position
 
     @property
