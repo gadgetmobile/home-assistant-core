@@ -32,7 +32,7 @@ class TestTempSensor(DefaultBoxTest):
     async def test_init(self, hass):
         """Test sensor default state."""
 
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         # TODO: include user-specified device name here too
         # TODO: maybe blebox_uniapi shouldn't generate name at all?

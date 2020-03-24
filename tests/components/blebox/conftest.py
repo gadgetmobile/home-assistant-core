@@ -52,7 +52,7 @@ class DefaultBoxTest:
     IP = "172.0.0.1"
     HASS_TYPE = None  # Must be set in subclass
 
-    async def async_entities(self, hass):
+    async def async_mock_entities(self, hass):
         """Return a new entities configured through HASS."""
 
         config = mock_config(self.IP)

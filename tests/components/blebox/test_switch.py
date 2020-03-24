@@ -36,7 +36,7 @@ class TestSwitchBox(DefaultBoxTest):
     async def test_init(self, hass):
         """Test switch default state."""
 
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "switchBox-0.relay"
         assert entity.unique_id == "BleBox-switchBox-1afe34e750b8-0.relay"
@@ -157,7 +157,7 @@ class TestSwitchBoxD(DefaultBoxTest):
     async def test_init(self, hass):
         """Test switch default state."""
 
-        entities = await self.async_entities(hass)
+        entities = await self.async_mock_entities(hass)
 
         entity = entities[0]
         # TODO: include relay output names?
@@ -187,7 +187,7 @@ class TestSwitchBoxD(DefaultBoxTest):
 
         self.updateable_feature_mock()
 
-        entities = await self.async_entities(hass)
+        entities = await self.async_mock_entities(hass)
 
         # updating any one is fine (since both call product.async_update)
         await entities[0].async_update()
@@ -210,7 +210,7 @@ class TestSwitchBoxD(DefaultBoxTest):
 
         self.second_off_feature_mock()
 
-        entities = await self.async_entities(hass)
+        entities = await self.async_mock_entities(hass)
 
         # updating any one is fine
         await entities[0].async_update()
@@ -237,7 +237,7 @@ class TestSwitchBoxD(DefaultBoxTest):
 
         self.turn_first_on_feature_mock()
 
-        entities = await self.async_entities(hass)
+        entities = await self.async_mock_entities(hass)
         await entities[0].async_update()
 
         await entities[0].async_turn_on()
@@ -263,7 +263,7 @@ class TestSwitchBoxD(DefaultBoxTest):
 
         self.turn_second_on_feature_mock()
 
-        entities = await self.async_entities(hass)
+        entities = await self.async_mock_entities(hass)
         await entities[0].async_update()
 
         await entities[1].async_turn_on()
@@ -290,7 +290,7 @@ class TestSwitchBoxD(DefaultBoxTest):
 
         self.turn_first_off_feature_mock()
 
-        entities = await self.async_entities(hass)
+        entities = await self.async_mock_entities(hass)
 
         await entities[0].async_update()
 
@@ -317,7 +317,7 @@ class TestSwitchBoxD(DefaultBoxTest):
 
         self.turn_second_off_feature_mock()
 
-        entities = await self.async_entities(hass)
+        entities = await self.async_mock_entities(hass)
 
         await entities[0].async_update()
 

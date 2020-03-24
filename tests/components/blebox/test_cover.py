@@ -177,7 +177,7 @@ class TestShutter(CoverTest):
     async def test_init(self, hass):
         """Test cover default state."""
 
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "shutterBox-position"
         assert entity.unique_id == "BleBox-shutterBox-2bee34e750b8-position"
@@ -274,7 +274,7 @@ class TestGateBox(CoverTest):
     async def test_init(self, hass):
         """Test cover default state."""
 
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "gateBox-position"
         assert entity.unique_id == "BleBox-gateBox-1afe34db9437-position"
@@ -341,7 +341,7 @@ class TestGateController(CoverTest):
     async def test_init(self, hass):
         """Test cover default state."""
 
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "gateController-position"
         assert entity.unique_id == "BleBox-gateController-2bee34e750b8-position"

@@ -52,7 +52,7 @@ class TestDimmer(LightTest):
 
     async def test_init(self, hass):
         """Test cover default state."""
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "dimmerBox-brightness"
         assert entity.unique_id == "BleBox-dimmerBox-1afe34e750b8-brightness"
@@ -189,7 +189,7 @@ class TestWLightBoxS(LightTest):
 
     async def test_init(self, hass):
         """Test cover default state."""
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "wLightBoxS-color"
         assert entity.unique_id == "BleBox-wLightBoxS-1afe34e750b8-color"
@@ -269,7 +269,7 @@ class TestWLightBox(LightTest):
 
     async def test_init(self, hass):
         """Test cover default state."""
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "wLightBox-color"
         assert entity.unique_id == "BleBox-wLightBox-1afe34e750b8-color"

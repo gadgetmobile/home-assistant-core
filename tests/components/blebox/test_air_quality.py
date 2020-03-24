@@ -44,7 +44,7 @@ class TestAirSensor(DefaultBoxTest):
     async def test_init(self, hass, feature_mock):
         """Test air quality sensor default state."""
 
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "airSensor-0.air"
         assert entity.icon == "mdi:blur"
@@ -56,7 +56,7 @@ class TestAirSensor(DefaultBoxTest):
     async def test_update(self, hass, updateable_feature_mock):
         """Test air quality sensor state after update."""
 
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         await entity.async_update()
 

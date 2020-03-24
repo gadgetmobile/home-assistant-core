@@ -129,7 +129,7 @@ class TestSauna(DefaultBoxTest):
     async def test_init(self, hass, feature_mock):
         """Test default state."""
 
-        entity = (await self.async_entities(hass))[0]
+        entity = (await self.async_mock_entities(hass))[0]
 
         assert entity.name == "saunaBox-thermostat"
         assert entity.unique_id == "BleBox-saunaBox-1afe34db9437-thermostat"
