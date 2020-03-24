@@ -110,6 +110,19 @@ async def test_flow_with_unknown_failure(hass, product_class_mock):
         assert result["errors"] == {"base": "unknown"}
 
 
+async def test_flow_with_unsupported_version(hass, product_class_mock):
+    """Test that config flow works."""
+    with product_class_mock as products_class:
+        products_class.async_from_host = CoroutineMock(
+            side_effect=blebox_uniapi.error.UnsupportedBoxVersion
+        )
+
+        flow = init_config_flow(hass)
+        result = await flow.async_step_user()
+        result = await flow.async_step_user({"host": "172.2.3.4", "port": 80})
+        assert result["errors"] == {"base": "unsupported_version"}
+
+
 async def test_already_configured(hass):
     """Test that same device cannot be added twice."""
 
