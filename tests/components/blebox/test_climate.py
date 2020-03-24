@@ -145,6 +145,15 @@ class TestSauna(DefaultBoxTest):
         assert entity.temperature_unit == TEMP_CELSIUS
         assert entity.state is None
 
+        assert entity.precision == 0.1  # same as HA default for celsius
+        assert entity.max_temp == 125
+        assert entity.min_temp == 7  # same as HA default
+
+        # TODO:
+        # target_temperature_low
+        # target_temperature_high
+        # target_temperature_step
+
     async def test_update(self, hass, updateable_feature_mock):
         """Test updating."""
 

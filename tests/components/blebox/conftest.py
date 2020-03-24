@@ -64,6 +64,7 @@ class DefaultBoxTest:
 
         def add_entries(entries, update):
             for entry in entries:
+                entry.hass = hass
                 all_entries.append(entry)
 
         assert await mod.async_setup_entry(hass, config, add_entries) is True
