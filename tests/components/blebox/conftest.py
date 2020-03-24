@@ -2,11 +2,13 @@
 
 from unittest import mock
 
-from asynctest import CoroutineMock, patch
+from asynctest import CoroutineMock, call, patch
 import blebox_uniapi
+import pytest
 
 from homeassistant.components.blebox import const
 from homeassistant.const import CONF_HOST, CONF_PORT
+from homeassistant.exceptions import ConfigEntryNotReady
 
 from tests.common import MockConfigEntry
 
@@ -69,6 +71,33 @@ class DefaultBoxTest:
 
     async def async_updated_entity(self, hass, index):
         """Return an already-updated entity created through HASS."""
-        entity = (await self.async_entities(hass))[index]
+        entity = (await self.async_mock_entities(hass))[index]
         await entity.async_update()
         return entity
+
+    async def test_setup_failure(self, hass):
+        """Mock the Product class."""
+
+        path = "homeassistant.components.blebox.Products"
+        patcher = patch(path, mock.DEFAULT, blebox_uniapi.products.Products, True, True)
+        products_class = patcher.start()
+
+        products_class.async_from_host = CoroutineMock(
+            side_effect=blebox_uniapi.error.ClientError
+        )
+
+        with patch("homeassistant.components.blebox._LOGGER.error") as error:
+            with pytest.raises(ConfigEntryNotReady):
+                await self.async_mock_entities(hass)
+
+            error.assert_has_calls(
+                [
+                    call(
+                        "Failed to add/identify device at %s:%d (%s)",
+                        "172.0.0.1",
+                        80,
+                        mock.ANY,
+                    )
+                ]
+            )
+            assert isinstance(error.call_args[0][3], blebox_uniapi.error.ClientError)
