@@ -19,7 +19,7 @@ from homeassistant.components.cover import (
     SUPPORT_STOP,
 )
 
-from .conftest import DefaultBoxTest, mock_config, mock_feature
+from .conftest import DefaultBoxTest, mock_feature
 
 
 class CoverTest(DefaultBoxTest):
@@ -148,17 +148,6 @@ class CoverTest(DefaultBoxTest):
         self.assert_state(entity, STATE_OPENING)
         await entity.async_stop_cover()
         self.assert_state(entity, STATE_OPEN)
-
-    async def test_async_setup_platform(self, hass):
-        """Test async_setup_platform (for coverage)."""
-        config = mock_config("172.90.80.70")
-        config.add_to_hass(hass)
-
-        def async_add(entities, state):
-            assert state is True
-            assert len(entities) == 1
-
-        assert await cover.async_setup_platform(hass, config.data, async_add)
 
 
 class TestShutter(CoverTest):
