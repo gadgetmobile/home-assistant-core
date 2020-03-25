@@ -121,7 +121,7 @@ axis==25
 bellows-homeassistant==0.14.0
 
 # homeassistant.components.blebox
-blebox_uniapi==1.1.0
+blebox_uniapi==1.2.0
 
 # homeassistant.components.bom
 bomradarloop==0.1.4
