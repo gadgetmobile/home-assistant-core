@@ -92,14 +92,7 @@ class DefaultBoxTest:
                 await self.async_mock_entities(hass)
 
             error.assert_has_calls(
-                [
-                    call(
-                        "Failed to add/identify device at %s:%d (%s)",
-                        "172.0.0.1",
-                        80,
-                        mock.ANY,
-                    )
-                ]
+                [call("Identify failed at %s:%d (%s)", "172.0.0.1", 80, mock.ANY,)]
             )
             assert isinstance(error.call_args[0][3], blebox_uniapi.error.ClientError)
 
