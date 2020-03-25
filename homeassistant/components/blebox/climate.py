@@ -12,6 +12,7 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE,
 )
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
+from homeassistant.exceptions import PlatformNotReady
 
 from . import CommonEntity, async_add_blebox
 
@@ -24,14 +25,19 @@ async def async_setup_platform(hass, config, async_add, discovery_info=None):
     """Set up BleBox platform."""
     # TODO: coverage
     return await async_add_blebox(
-        BleBoxClimateEntity, "climates", hass, config, async_add
+        BleBoxClimateEntity, "climates", hass, config, async_add, PlatformNotReady
     )
 
 
 async def async_setup_entry(hass, config_entry, async_add):
     """Set up a BleBox entry."""
     return await async_add_blebox(
-        BleBoxClimateEntity, "climates", hass, config_entry.data, async_add,
+        BleBoxClimateEntity,
+        "climates",
+        hass,
+        config_entry.data,
+        async_add,
+        PlatformNotReady,
     )
 
 

@@ -1,6 +1,7 @@
 """BleBox air quality entity."""
 
 from homeassistant.components.air_quality import AirQualityEntity
+from homeassistant.exceptions import PlatformNotReady
 
 from . import CommonEntity, async_add_blebox
 
@@ -15,7 +16,12 @@ async def async_setup_platform(hass, config, async_add, discovery_info=None):
     """Set up a BleBox air quality device."""
     # TODO: coverage
     return await async_add_blebox(
-        BleBoxAirQualityEntity, "air_qualities", hass, config, async_add
+        BleBoxAirQualityEntity,
+        "air_qualities",
+        hass,
+        config,
+        async_add,
+        PlatformNotReady,
     )
 
 
@@ -23,7 +29,12 @@ async def async_setup_entry(hass, config_entry, async_add):
     """Set up a BleBox air quality device."""
     # TODO: coverage
     return await async_add_blebox(
-        BleBoxAirQualityEntity, "air_qualities", hass, config_entry.data, async_add,
+        BleBoxAirQualityEntity,
+        "air_qualities",
+        hass,
+        config_entry.data,
+        async_add,
+        PlatformNotReady,
     )
 
 

@@ -10,7 +10,6 @@ import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PORT, CONF_TIMEOUT
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
@@ -52,7 +51,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     return unload_ok
 
 
-async def async_add_blebox(klass, method, hass, config, async_add):
+async def async_add_blebox(klass, method, hass, config, async_add, exception):
     """Add a BleBox device from the given config."""
     host = config.get(CONF_HOST)
     port = config.get(CONF_PORT)
@@ -64,7 +63,7 @@ async def async_add_blebox(klass, method, hass, config, async_add):
         product = await Products.async_from_host(api_host)
     except Error as ex:
         _LOGGER.error("Failed to add/identify device at %s:%d (%s)", host, port, ex)
-        raise ConfigEntryNotReady from ex
+        raise exception from ex
 
     entities = []
     for entity in product.features[method]:

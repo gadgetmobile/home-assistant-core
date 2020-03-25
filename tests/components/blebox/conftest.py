@@ -8,7 +8,7 @@ import pytest
 
 from homeassistant.components.blebox import const
 from homeassistant.const import CONF_HOST, CONF_PORT
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import PlatformNotReady
 
 from tests.common import MockConfigEntry
 
@@ -88,7 +88,7 @@ class DefaultBoxTest:
         )
 
         with patch("homeassistant.components.blebox._LOGGER.error") as error:
-            with pytest.raises(ConfigEntryNotReady):
+            with pytest.raises(PlatformNotReady):
                 await self.async_mock_entities(hass)
 
             error.assert_has_calls(

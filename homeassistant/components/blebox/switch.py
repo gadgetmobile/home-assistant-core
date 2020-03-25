@@ -1,5 +1,6 @@
 """BleBox switch implementation."""
 from homeassistant.components.switch import DEVICE_CLASS_SWITCH, SwitchDevice
+from homeassistant.exceptions import PlatformNotReady
 
 from . import CommonEntity, async_add_blebox
 
@@ -13,19 +14,19 @@ PARALLEL_UPDATES = 1
 async def async_setup_platform(hass, config, async_add, discovery_info=None):
     """Set up BleBox platform."""
     return await async_add_blebox(
-        # TODO: coverage
-        BleBoxSwitchEntity,
-        "switches",
-        hass,
-        config,
-        async_add,
+        BleBoxSwitchEntity, "switches", hass, config, async_add, PlatformNotReady
     )
 
 
 async def async_setup_entry(hass, config_entry, async_add):
     """Set up a BleBox entry."""
     return await async_add_blebox(
-        BleBoxSwitchEntity, "switches", hass, config_entry.data, async_add,
+        BleBoxSwitchEntity,
+        "switches",
+        hass,
+        config_entry.data,
+        async_add,
+        PlatformNotReady,
     )
 
 
