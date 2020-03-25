@@ -1,4 +1,4 @@
-"""BleBox climate entity implementation."""
+"""BleBox climate entity."""
 
 from homeassistant.components.climate import ClimateDevice
 from homeassistant.components.climate.const import (
@@ -23,7 +23,7 @@ async def async_setup_platform(hass, config, async_add, discovery_info=None):
 
 
 async def async_setup_entry(hass, config_entry, async_add):
-    """Set up a BleBox entry."""
+    """Set up a BleBox climate entity."""
     return await async_add_blebox(
         BleBoxClimateEntity,
         "climates",

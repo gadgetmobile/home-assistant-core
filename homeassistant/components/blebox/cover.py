@@ -1,4 +1,4 @@
-"""BleBox cover entity implementation."""
+"""BleBox cover entity."""
 
 import logging
 
@@ -24,7 +24,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_platform(hass, config, async_add, discovery_info=None):
-    """Set up BleBox platform."""
+    """Set up BleBox cover."""
     return await async_add_blebox(
         BleBoxCoverEntity, "covers", hass, config, async_add, PlatformNotReady
     )
