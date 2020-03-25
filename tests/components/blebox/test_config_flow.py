@@ -17,6 +17,7 @@ def init_config_flow(hass):
     """Init a configuration flow."""
     flow = config_flow.BleBoxConfigFlow()
     flow.hass = hass
+    flow.context = {"source": config_entries.SOURCE_USER}
     return flow
 
 
@@ -151,7 +152,7 @@ async def test_already_configured(hass):
     )
 
     assert result["type"] == data_entry_flow.RESULT_TYPE_ABORT
-    assert result["reason"] == "already_configured"
+    assert result["reason"] == "address_already_configured"
 
 
 async def test_async_setup(hass):
