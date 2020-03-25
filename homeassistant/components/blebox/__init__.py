@@ -20,6 +20,8 @@ CONFIG_SCHEMA = vol.Schema({DOMAIN: vol.Schema({})}, extra=vol.ALLOW_EXTRA)
 
 PLATFORMS = ["sensor", "cover", "air_quality", "light", "climate", "switch"]
 
+PARALLEL_UPDATES = 0
+
 
 async def async_setup(hass: HomeAssistant, config: dict):
     """Set up the BleBox devices component."""

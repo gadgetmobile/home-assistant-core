@@ -16,14 +16,9 @@ from homeassistant.exceptions import PlatformNotReady
 
 from . import CommonEntity, async_add_blebox
 
-# NOTE: this should be removed once client library uses a semaphore
-PARALLEL_UPDATES = 1
 
-
-# TODO: remove?
 async def async_setup_platform(hass, config, async_add, discovery_info=None):
     """Set up BleBox platform."""
-    # TODO: coverage
     return await async_add_blebox(
         BleBoxClimateEntity, "climates", hass, config, async_add, PlatformNotReady
     )

@@ -22,9 +22,6 @@ from . import CommonEntity, async_add_blebox
 
 _LOGGER = logging.getLogger(__name__)
 
-# NOTE: this should be removed once client library uses a semaphore
-PARALLEL_UPDATES = 1
-
 
 async def async_setup_platform(hass, config, async_add, discovery_info=None):
     """Set up BleBox platform."""

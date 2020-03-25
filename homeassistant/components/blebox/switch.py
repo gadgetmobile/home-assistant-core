@@ -4,10 +4,6 @@ from homeassistant.exceptions import PlatformNotReady
 
 from . import CommonEntity, async_add_blebox
 
-# NOTE: this should be removed once client library uses a semaphore
-PARALLEL_UPDATES = 1
-
-
 # pylint: disable=fixme
 
 
