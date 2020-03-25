@@ -119,7 +119,7 @@ class DefaultBoxTest:
         with patch("homeassistant.components.blebox._LOGGER.error") as error:
             await self.async_updated_entity(hass, 0)
 
-            error.assert_has_calls([call("Updating %s failed: %s", name, mock.ANY)])
+            error.assert_has_calls([call("Updating '%s' failed: %s", name, mock.ANY)])
             assert isinstance(error.call_args[0][2], blebox_uniapi.error.ClientError)
 
     async def test_async_setup_platform(self, hass):
