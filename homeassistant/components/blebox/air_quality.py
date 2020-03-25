@@ -8,7 +8,6 @@ from . import CommonEntity, async_add_blebox
 
 async def async_setup_platform(hass, config, async_add, discovery_info=None):
     """Set up a BleBox air quality device."""
-    # TODO: coverage
     return await async_add_blebox(
         BleBoxAirQualityEntity,
         "air_qualities",
@@ -21,7 +20,6 @@ async def async_setup_platform(hass, config, async_add, discovery_info=None):
 
 async def async_setup_entry(hass, config_entry, async_add):
     """Set up a BleBox air quality device."""
-    # TODO: coverage
     return await async_add_blebox(
         BleBoxAirQualityEntity,
         "air_qualities",

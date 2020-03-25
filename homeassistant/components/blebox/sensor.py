@@ -11,7 +11,6 @@ from . import CommonEntity, async_add_blebox
 
 async def async_setup_platform(hass, config, async_add, discovery_info=None):
     """Set up BleBox platform."""
-    # TODO: coverage
     return await async_add_blebox(
         BleBoxSensorEntity, "sensors", hass, config, async_add, PlatformNotReady
     )
