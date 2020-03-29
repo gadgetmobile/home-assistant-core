@@ -29,6 +29,8 @@ def default_mock():
         is_on=None,
         desired=None,
         current=None,
+        min_temp=-54.3,
+        max_temp=124.3,
     )
 
 
@@ -155,8 +157,8 @@ class TestSauna(DefaultBoxTest):
         assert entity.state is None
 
         assert entity.precision == 0.1  # same as HA default for celsius
-        assert entity.max_temp == 125
-        assert entity.min_temp == 7  # same as HA default
+        assert entity.max_temp == 124.3
+        assert entity.min_temp == -54.3
 
         # TODO:
         # target_temperature_low
