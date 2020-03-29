@@ -101,5 +101,4 @@ class CommonEntity:
         try:
             await self._feature.async_update()
         except Error as ex:
-            # TODO: coverage
             _LOGGER.error("Updating '%s' failed: %s", self.name, ex)
