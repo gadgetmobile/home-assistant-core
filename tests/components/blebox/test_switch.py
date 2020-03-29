@@ -1,6 +1,6 @@
 """Blebox switch tests."""
 
-from asynctest import CoroutineMock
+from asynctest import CoroutineMock, PropertyMock
 import blebox_uniapi
 import pytest
 
@@ -20,7 +20,7 @@ class TestSwitchBox(DefaultBoxTest):
 
     def default_mock(self):
         """Return a default switchBox switch entity mock."""
-        return mock_feature(
+        feature = mock_feature(
             "switches",
             blebox_uniapi.switch.Switch,
             unique_id="BleBox-switchBox-1afe34e750b8-0.relay",
@@ -28,6 +28,10 @@ class TestSwitchBox(DefaultBoxTest):
             device_class="relay",
             is_on=False,
         )
+        product = feature.product
+        type(product).name = PropertyMock(return_value="My switch box")
+        type(product).model = PropertyMock(return_value="switchBox")
+        return feature
 
     @pytest.fixture(autouse=True)
     def feature_mock(self):
@@ -48,6 +52,16 @@ class TestSwitchBox(DefaultBoxTest):
         assert entity.device_class == DEVICE_CLASS_SWITCH
 
         assert entity.is_on is False  # state already available here
+
+    async def test_device_info(self, hass, feature_mock):
+        """Test device info."""
+        entity = (await self.async_mock_entities(hass))[0]
+        info = entity.device_info
+        assert info["name"] == "My switch box"
+        assert info["identifiers"] == {("blebox", "abcd0123ef5678")}
+        assert info["manufacturer"] == "BleBox"
+        assert info["model"] == "switchBox"
+        assert info["sw_version"] == "1.23"
 
     def updateable_feature_mock(self):
         """Set up a mocked feature which can be updated."""
@@ -139,7 +153,7 @@ class TestSwitchBoxD(DefaultBoxTest):
         """Provide a default single-feature mock for base class."""
 
         id = 0
-        return mock_feature(
+        feature = mock_feature(
             "switches",
             blebox_uniapi.switch.Switch,
             unique_id=f"BleBox-switchBoxD-1afe34e750b8-{id}.relay",
@@ -147,6 +161,7 @@ class TestSwitchBoxD(DefaultBoxTest):
             device_class="relay",
             is_on=None,
         )
+        return feature
 
     def default_mock_relay(self, id=0):
         """Return a default switchBoxD switch entity mock."""
@@ -165,7 +180,19 @@ class TestSwitchBoxD(DefaultBoxTest):
         r2 = self.default_mock_relay(1)
 
         self._feature_mocks = [r1, r2]
-        setup_product_mock("switches", self._feature_mocks)
+
+        # TODO: pass product to features mocks instead
+        product = setup_product_mock("switches", self._feature_mocks)
+
+        type(product).name = PropertyMock(return_value="My relays")
+        type(product).model = PropertyMock(return_value="switchBoxD")
+        type(product).brand = PropertyMock(return_value="BleBox")
+        type(product).firmware_version = PropertyMock(return_value="1.23")
+        type(product).unique_id = PropertyMock(return_value="abcd0123ef5678")
+
+        type(r1).product = product
+        type(r2).product = product
+
         return self._feature_mocks
 
     async def test_init(self, hass):
@@ -185,6 +212,24 @@ class TestSwitchBoxD(DefaultBoxTest):
         assert entity.unique_id == "BleBox-switchBoxD-1afe34e750b8-1.relay"
         assert entity.device_class == DEVICE_CLASS_SWITCH
         assert entity.is_on is None
+
+    async def test_device_info(self, hass, feature_mock):
+        """Test device info."""
+        entity = (await self.async_mock_entities(hass))[0]
+        info = entity.device_info
+        assert info["name"] == "My relays"
+        assert info["identifiers"] == {("blebox", "abcd0123ef5678")}
+        assert info["manufacturer"] == "BleBox"
+        assert info["model"] == "switchBoxD"
+        assert info["sw_version"] == "1.23"
+
+        entity = (await self.async_mock_entities(hass))[1]
+        info = entity.device_info
+        assert info["name"] == "My relays"
+        assert info["identifiers"] == {("blebox", "abcd0123ef5678")}
+        assert info["manufacturer"] == "BleBox"
+        assert info["model"] == "switchBoxD"
+        assert info["sw_version"] == "1.23"
 
     def updateable_feature_mock(self):
         """Set up a mocked feature which can be updated."""

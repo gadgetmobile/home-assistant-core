@@ -1,6 +1,6 @@
 """BleBox light entities tests."""
 
-from asynctest import CoroutineMock
+from asynctest import CoroutineMock, PropertyMock
 import blebox_uniapi
 import pytest
 
@@ -34,7 +34,7 @@ class TestDimmer(LightTest):
 
     def default_mock(self):
         """Return a default light entity mock."""
-        return mock_feature(
+        feature = mock_feature(
             "lights",
             blebox_uniapi.light.Light,
             unique_id="BleBox-dimmerBox-1afe34e750b8-brightness",
@@ -43,6 +43,10 @@ class TestDimmer(LightTest):
             brightness=65,
             is_on=True,
         )
+        product = feature.product
+        type(product).name = PropertyMock(return_value="My dimmer")
+        type(product).model = PropertyMock(return_value="dimmerBox")
+        return feature
 
     def updateable_feature_mock(self):
         """Set up mocked feature that can be updated."""
@@ -65,6 +69,16 @@ class TestDimmer(LightTest):
         assert entity.brightness == 65
 
         assert entity.is_on is True
+
+    async def test_device_info(self, hass, feature_mock):
+        """Test device info."""
+        entity = (await self.async_mock_entities(hass))[0]
+        info = entity.device_info
+        assert info["name"] == "My dimmer"
+        assert info["identifiers"] == {("blebox", "abcd0123ef5678")}
+        assert info["manufacturer"] == "BleBox"
+        assert info["model"] == "dimmerBox"
+        assert info["sw_version"] == "1.23"
 
     async def test_update(self, hass, aioclient_mock):
         """Test light updating."""
@@ -178,7 +192,7 @@ class TestWLightBoxS(LightTest):
 
     def default_mock(self):
         """Return a default light entity mock."""
-        return mock_feature(
+        feature = mock_feature(
             "lights",
             blebox_uniapi.light.Light,
             unique_id="BleBox-wLightBoxS-1afe34e750b8-color",
@@ -188,6 +202,10 @@ class TestWLightBoxS(LightTest):
             brightness=None,
             is_on=None,
         )
+        product = feature.product
+        type(product).name = PropertyMock(return_value="My wLightBoxS")
+        type(product).model = PropertyMock(return_value="wLightBoxS")
+        return feature
 
     async def test_init(self, hass):
         """Test cover default state."""
@@ -200,6 +218,16 @@ class TestWLightBoxS(LightTest):
         assert entity.brightness is None
 
         assert entity.is_on is None
+
+    async def test_device_info(self, hass, feature_mock):
+        """Test device info."""
+        entity = (await self.async_mock_entities(hass))[0]
+        info = entity.device_info
+        assert info["name"] == "My wLightBoxS"
+        assert info["identifiers"] == {("blebox", "abcd0123ef5678")}
+        assert info["manufacturer"] == "BleBox"
+        assert info["model"] == "wLightBoxS"
+        assert info["sw_version"] == "1.23"
 
     def updateable_feature_mock(self):
         """Set up mocked feature that can be updated."""
@@ -256,7 +284,7 @@ class TestWLightBox(LightTest):
 
     def default_mock(self):
         """Return a default light entity mock."""
-        return mock_feature(
+        feature = mock_feature(
             "lights",
             blebox_uniapi.light.Light,
             unique_id="BleBox-wLightBox-1afe34e750b8-color",
@@ -266,6 +294,10 @@ class TestWLightBox(LightTest):
             white_value=None,
             rgbw_hex=None,
         )
+        product = feature.product
+        type(product).name = PropertyMock(return_value="My wLightBox")
+        type(product).model = PropertyMock(return_value="wLightBox")
+        return feature
 
     async def test_init(self, hass):
         """Test cover default state."""
@@ -282,6 +314,16 @@ class TestWLightBox(LightTest):
         assert entity.white_value is None
 
         assert entity.is_on is None  # state already available
+
+    async def test_device_info(self, hass, feature_mock):
+        """Test device info."""
+        entity = (await self.async_mock_entities(hass))[0]
+        info = entity.device_info
+        assert info["name"] == "My wLightBox"
+        assert info["identifiers"] == {("blebox", "abcd0123ef5678")}
+        assert info["manufacturer"] == "BleBox"
+        assert info["model"] == "wLightBox"
+        assert info["sw_version"] == "1.23"
 
     def updateable_feature_mock(self):  # overloaded
         """Set up mocked feature that can be updated."""

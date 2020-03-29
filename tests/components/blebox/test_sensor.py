@@ -1,6 +1,6 @@
 """Blebox sensors tests."""
 
-from asynctest import CoroutineMock
+from asynctest import CoroutineMock, PropertyMock
 import blebox_uniapi
 import pytest
 
@@ -17,7 +17,7 @@ class TestTempSensor(DefaultBoxTest):
 
     def default_mock(self):
         """Return a default sensor mock."""
-        return mock_feature(
+        feature = mock_feature(
             "sensors",
             blebox_uniapi.sensor.Temperature,
             unique_id="BleBox-tempSensor-1afe34db9437-0.temperature",
@@ -26,6 +26,10 @@ class TestTempSensor(DefaultBoxTest):
             unit="celsius",
             current=None,
         )
+        product = feature.product
+        type(product).name = PropertyMock(return_value="My temperature sensor")
+        type(product).model = PropertyMock(return_value="tempSensor")
+        return feature
 
     @pytest.fixture(autouse=True)
     def feature_mock(self):
@@ -46,6 +50,16 @@ class TestTempSensor(DefaultBoxTest):
         assert entity.unique_id == "BleBox-tempSensor-1afe34db9437-0.temperature"
         assert entity.unit_of_measurement == TEMP_CELSIUS
         assert entity.state is None
+
+    async def test_device_info(self, hass, feature_mock):
+        """Test device info."""
+        entity = (await self.async_mock_entities(hass))[0]
+        info = entity.device_info
+        assert info["name"] == "My temperature sensor"
+        assert info["identifiers"] == {("blebox", "abcd0123ef5678")}
+        assert info["manufacturer"] == "BleBox"
+        assert info["model"] == "tempSensor"
+        assert info["sw_version"] == "1.23"
 
     def updateable_feature_mock(self):
         """Set up mocked feature that can be updated."""

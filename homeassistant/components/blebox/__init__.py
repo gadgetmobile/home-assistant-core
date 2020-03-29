@@ -99,3 +99,15 @@ class CommonEntity:
             await self._feature.async_update()
         except Error as ex:
             _LOGGER.error("Updating '%s' failed: %s", self.name, ex)
+
+    @property
+    def device_info(self):
+        """Return device information about this WLED device."""
+        product = self._feature.product
+        return {
+            "identifiers": {(DOMAIN, product.unique_id)},
+            "name": product.name,
+            "manufacturer": product.brand,
+            "model": product.model,
+            "sw_version": product.firmware_version,
+        }

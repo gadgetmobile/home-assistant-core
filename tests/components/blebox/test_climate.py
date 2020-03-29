@@ -1,6 +1,6 @@
 """BleBox climate entities tests."""
 
-from asynctest import CoroutineMock
+from asynctest import CoroutineMock, PropertyMock
 import blebox_uniapi
 import pytest
 
@@ -20,7 +20,7 @@ from .conftest import DefaultBoxTest, mock_feature
 
 def default_mock():
     """Return a default climate entity mock."""
-    return mock_feature(
+    feature = mock_feature(
         "climates",
         blebox_uniapi.climate.Climate,
         unique_id="BleBox-saunaBox-1afe34db9437-thermostat",
@@ -32,6 +32,10 @@ def default_mock():
         min_temp=-54.3,
         max_temp=124.3,
     )
+    product = feature.product
+    type(product).name = PropertyMock(return_value="My sauna")
+    type(product).model = PropertyMock(return_value="saunaBox")
+    return feature
 
 
 @pytest.fixture
@@ -164,6 +168,16 @@ class TestSauna(DefaultBoxTest):
         # target_temperature_low
         # target_temperature_high
         # target_temperature_step
+
+    async def test_device_info(self, hass, feature_mock):
+        """Test device info."""
+        entity = (await self.async_mock_entities(hass))[0]
+        info = entity.device_info
+        assert info["name"] == "My sauna"
+        assert info["identifiers"] == {("blebox", "abcd0123ef5678")}
+        assert info["manufacturer"] == "BleBox"
+        assert info["model"] == "saunaBox"
+        assert info["sw_version"] == "1.23"
 
     async def test_update(self, hass, updateable_feature_mock):
         """Test updating."""
