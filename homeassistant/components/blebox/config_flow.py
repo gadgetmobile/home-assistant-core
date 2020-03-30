@@ -13,21 +13,25 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .const import DOMAIN
 from .errors import CannotConnect, UnsupportedVersion
 
-PLACEHOLDER_HOST = "192.168.0.2"
-PLACEHOLDER_PORT = 80
+DEFAULT_HOST = "192.168.0.2"
+DEFAULT_PORT = 80
 
 _LOGGER = logging.getLogger(__name__)
 
-DATA_SCHEMA = vol.Schema(
-    {
-        vol.Required(CONF_HOST, default=PLACEHOLDER_HOST): str,
-        vol.Required(CONF_PORT, default=PLACEHOLDER_PORT): int,
-    }
-)
+
+def host_port(data):
+    """Return a list with host and port."""
+    return (data[CONF_HOST], data[CONF_PORT])
 
 
-def create_schema(host, port):
+def create_schema(previous_input=None):
     """Create a schema with given values as default."""
+    if previous_input is not None:
+        host, port = host_port(previous_input)
+    else:
+        host = DEFAULT_HOST
+        port = DEFAULT_PORT
+
     return vol.Schema(
         {
             vol.Required(CONF_HOST, default=host): str,
@@ -52,14 +56,11 @@ class BleBoxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
         if user_input is not None:
 
-            def host_port(data):
-                return (data[CONF_HOST], data[CONF_PORT])
-
             addr = host_port(user_input)
+            address = "{0}:{1}".format(*addr)
 
             for entry in self.hass.config_entries.async_entries(DOMAIN):
                 if addr == host_port(entry.data):
-                    address = "{0}:{1}".format(*addr)
                     return self.async_abort(
                         reason="address_already_configured",
                         description_placeholders={"address": address},
@@ -98,13 +99,9 @@ class BleBoxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 _LOGGER.exception("Unexpected exception: %s", ex)
                 errors["base"] = "unknown"
 
-        if user_input is not None:
-            host = user_input[CONF_HOST]
-            port = user_input[CONF_PORT]
-        else:
-            host = PLACEHOLDER_HOST
-            port = PLACEHOLDER_PORT
-
         return self.async_show_form(
-            step_id="user", data_schema=create_schema(host, port), errors=errors,
+            step_id="user",
+            data_schema=create_schema(user_input),
+            errors=errors,
+            description_placeholders={"address": addr},
         )
