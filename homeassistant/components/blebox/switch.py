@@ -2,7 +2,7 @@
 from homeassistant.components.switch import DEVICE_CLASS_SWITCH, SwitchDevice
 from homeassistant.exceptions import PlatformNotReady
 
-from . import CommonEntity, async_add_blebox
+from . import BleBoxEntity, async_add_blebox
 
 
 async def async_setup_entry(hass, config_entry, async_add):
@@ -17,7 +17,7 @@ async def async_setup_entry(hass, config_entry, async_add):
     )
 
 
-class BleBoxSwitchEntity(CommonEntity, SwitchDevice):
+class BleBoxSwitchEntity(BleBoxEntity, SwitchDevice):
     """Representation of a BleBox switch feature."""
 
     @property
