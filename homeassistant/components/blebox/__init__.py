@@ -55,8 +55,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
 
 async def async_add_blebox(klass, method, hass, config, async_add, exception):
     """Add a BleBox device from the given config."""
-    host = config.get(CONF_HOST)
-    port = config.get(CONF_PORT)
+    host = config[CONF_HOST]
+    port = config[CONF_PORT]
     timeout = DEFAULT_SETUP_TIMEOUT
 
     websession = async_get_clientsession(hass)
